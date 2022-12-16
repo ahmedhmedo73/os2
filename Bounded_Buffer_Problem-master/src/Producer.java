@@ -8,21 +8,22 @@ public class Producer extends Thread {
 	private Semaphore emptycount;
 	private Random randGen;
 	private Queue<Integer> queue;
-	
+	private int n = 1;
+
 	public Producer(Semaphore fillcount, Semaphore emptycount, Queue<Integer> queue) {
 		this.fillcount = fillcount;
 		this.emptycount = emptycount;
 		randGen = new Random(1);
 		this.queue = queue;
 	}
-	
+
 	@Override
 	public void run() {
-		while(true) {
+		while (true) {
 			try {
-				if (emptycount.availablePermits()>0) {
-					int n = Math.abs((randGen.nextInt(10)) % 1000);
-					queue.add(n);
+				if (emptycount.availablePermits() > 0) {
+					queue.add(this.n);
+					this.n++;
 					fillcount.release();
 					emptycount.acquire();
 					System.out.println("Producer produce " + n);
@@ -36,5 +37,5 @@ public class Producer extends Thread {
 			}
 		}
 	}
-	
+
 }
