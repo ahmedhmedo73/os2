@@ -26,12 +26,12 @@ public class Consumer extends Thread {
 
 					fillcount.acquire();
 
-					System.out.println("Consumer consume " + queue.poll());
+					System.out.println("Client ate Meal " + queue.poll());
 
 					emptycount.release();
 
 				} else {
-					System.out.println("The queue is empty consumer can't consume");
+					System.out.println("Their is no Meal");
 				}
 				Mutex.release();
 				sleep(Math.abs(randGen.nextInt()) % 2000 + 1000);

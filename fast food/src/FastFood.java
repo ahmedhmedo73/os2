@@ -7,14 +7,19 @@ public class FastFood {
      * @param args the command line arguments
      */
     static Buffer buff = new Buffer(2);
+
     static Semaphore semWorker = new Semaphore(2);
     static Semaphore semTills = new Semaphore(2);
+    static Semaphore Mutex = new Semaphore(1, true);// to check critical sections
+
     static int totalOrders = 10;
     static int startOrders = 0;
     static int processedOrders = 0;
 
+    public FastFood() {
+    }
+
     public static void main(String[] args) {
-        // TODO code application logic here
 
         int numberOfWorkers = 2;
         int numberOfTills = 3;
@@ -27,13 +32,13 @@ public class FastFood {
         // int tillId, int foodId, Buffer buff
         for (int i = 0; i < tills.length; i++) {
             int foodId = rand.nextInt(numberOfFoodChoices) + 1;
-            tills[i] = new Tills(i, foodId, buff);
+            tills[i] = new Tills(i + 1, foodId, buff, Mutex);
             tills[i].start();
         }
 
         // int workerId, Buffer buff
         for (int i = 0; i < workers.length; i++) {
-            workers[i] = new Worker(i, buff);
+            workers[i] = new Worker(i + 1, buff, Mutex);
             workers[i].start();
         }
 
