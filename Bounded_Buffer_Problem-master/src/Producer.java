@@ -3,31 +3,38 @@ import java.util.Random;
 import java.util.concurrent.Semaphore;
 
 public class Producer extends Thread {
-    private final Semaphore Mutex;//to check critical sections
+	private final Semaphore Mutex;// to check critical sections
 	private Semaphore fillcount;
 	private Semaphore emptycount;
 	private Random randGen;
 	private Queue<Integer> queue;
-	private int n = 0;
-	
-	public Producer(Semaphore Mutex,Semaphore fillcount, Semaphore emptycount, Queue<Integer> queue) {
+	private int n = 1;
+
+	public Producer(Semaphore Mutex, Semaphore fillcount, Semaphore emptycount, Queue<Integer> queue) {
 		this.Mutex = Mutex;
 		this.fillcount = fillcount;
 		this.emptycount = emptycount;
 		randGen = new Random(1);
 		this.queue = queue;
 	}
-	
+
 	@Override
 	public void run() {
-		while(true) {
+		while (this.n <= 10) {
 			try {
-				if (emptycount.availablePermits()>0) {
-					queue.add(this.n);
-					this.n ++;
-					fillcount.release();
+				if (emptycount.availablePermits() > 0) {
+
 					emptycount.acquire();
+					Mutex.acquire();
+
+					queue.add(this.n);
 					System.out.println("Producer produce " + n);
+
+					this.n++;
+
+					Mutex.release();
+					fillcount.release();
+
 				} else {
 					System.out.println("The queue is full producer can't produce");
 				}
@@ -37,6 +44,7 @@ public class Producer extends Thread {
 				e.printStackTrace();
 			}
 		}
+
 	}
-	
+
 }
