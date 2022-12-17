@@ -22,22 +22,22 @@ public class Producer extends Thread {
 	public void run() {
 		while (this.n <= 10) {
 			try {
+				Mutex.acquire();
 				if (emptycount.availablePermits() > 0) {
 
 					emptycount.acquire();
-					Mutex.acquire();
 
 					queue.add(this.n);
 					System.out.println("Producer produce " + n);
 
 					this.n++;
 
-					Mutex.release();
 					fillcount.release();
-
+					
 				} else {
 					System.out.println("The queue is full producer can't produce");
 				}
+				Mutex.release();
 				sleep(Math.abs(randGen.nextInt()) % 1000 + 1000);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

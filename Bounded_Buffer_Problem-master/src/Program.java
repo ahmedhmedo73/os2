@@ -4,7 +4,7 @@ import java.util.concurrent.Semaphore;
 
 public class Program {
 
-	public static final int BUFFER_SIZE = 3;
+	public static final int BUFFER_SIZE = 2;
 	private final Semaphore Mutex;// to check critical sections
 	private Semaphore fillcount;
 	private Semaphore emptycount;

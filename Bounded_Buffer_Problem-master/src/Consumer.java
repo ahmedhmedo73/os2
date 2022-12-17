@@ -19,21 +19,21 @@ public class Consumer extends Thread {
 
 	@Override
 	public void run() {
-		for (int i = 0; i <= 10; i++) {
+		for (int i = 1; i <= 10; i++) {
 			try {
+				Mutex.acquire();
 				if (fillcount.availablePermits() > 0) {
 
 					fillcount.acquire();
-					Mutex.acquire();
 
 					System.out.println("Consumer consume " + queue.poll());
 
-					Mutex.release();
 					emptycount.release();
 
 				} else {
 					System.out.println("The queue is empty consumer can't consume");
 				}
+				Mutex.release();
 				sleep(Math.abs(randGen.nextInt()) % 2000 + 1000);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
