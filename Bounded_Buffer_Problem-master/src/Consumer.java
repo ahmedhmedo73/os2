@@ -3,13 +3,14 @@ import java.util.Random;
 import java.util.concurrent.Semaphore;
 
 public class Consumer extends Thread{
-	
+	private final Semaphore Mutex;//to check critical sections
 	private Semaphore fillcount;
 	private Semaphore emptycount;
 	private Random randGen;
 	private Queue<Integer> queue;
 	
-	public Consumer(Semaphore fillcount, Semaphore emptycount, Queue<Integer> queue) {
+	public Consumer(Semaphore Mutex,Semaphore fillcount, Semaphore emptycount, Queue<Integer> queue) {
+		this.Mutex = Mutex;
 		this.fillcount = fillcount;
 		this.emptycount = emptycount;
 		randGen = new Random(1);

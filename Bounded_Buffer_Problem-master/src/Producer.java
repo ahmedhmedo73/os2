@@ -3,13 +3,15 @@ import java.util.Random;
 import java.util.concurrent.Semaphore;
 
 public class Producer extends Thread {
-
+    private final Semaphore Mutex;//to check critical sections
 	private Semaphore fillcount;
 	private Semaphore emptycount;
 	private Random randGen;
 	private Queue<Integer> queue;
+	private int n = 0;
 	
-	public Producer(Semaphore fillcount, Semaphore emptycount, Queue<Integer> queue) {
+	public Producer(Semaphore Mutex,Semaphore fillcount, Semaphore emptycount, Queue<Integer> queue) {
+		this.Mutex = Mutex;
 		this.fillcount = fillcount;
 		this.emptycount = emptycount;
 		randGen = new Random(1);
@@ -21,8 +23,8 @@ public class Producer extends Thread {
 		while(true) {
 			try {
 				if (emptycount.availablePermits()>0) {
-					int n = Math.abs((randGen.nextInt(10)) % 1000);
-					queue.add(n);
+					queue.add(this.n);
+					this.n ++;
 					fillcount.release();
 					emptycount.acquire();
 					System.out.println("Producer produce " + n);
