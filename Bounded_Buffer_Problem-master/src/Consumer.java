@@ -25,6 +25,7 @@ public class Consumer extends Thread {
 				if (fillcount.availablePermits() > 0) {
 
 					fillcount.acquire();
+					System.out.println("Consumed " + queue.poll());
 					emptycount.release();
 
 				} else {

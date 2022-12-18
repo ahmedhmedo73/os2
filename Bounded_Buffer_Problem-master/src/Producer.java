@@ -28,6 +28,7 @@ public class Producer extends Thread {
 					emptycount.acquire();
 
 					queue.add(this.n);
+					System.out.println("Produced "+ n);
 					this.n ++;
 					fillcount.release();
 
