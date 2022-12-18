@@ -28,14 +28,11 @@ public class Producer extends Thread {
 					emptycount.acquire();
 
 					queue.add(this.n);
-					System.out.println("Produced " + n);
-
-					this.n++;
-
+					this.n ++;
 					fillcount.release();
 
 				} else {
-					System.out.println("Producer can't produce");
+					System.out.println("The queue is full producer can't produce");
 				}
 				Mutex.release();
 				sleep(Math.abs(randGen.nextInt()) % 1000 + 1000);

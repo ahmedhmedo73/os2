@@ -25,13 +25,10 @@ public class Consumer extends Thread {
 				if (fillcount.availablePermits() > 0) {
 
 					fillcount.acquire();
-
-					System.out.println("Consumed " + queue.poll());
-
 					emptycount.release();
 
 				} else {
-					System.out.println("Consumer can't consume");
+					System.out.println("The queue is empty consumer can't consume");
 				}
 				Mutex.release();
 				sleep(Math.abs(randGen.nextInt()) % 2000 + 1000);
